@@ -1,0 +1,5 @@
+# Cloudflare Pages headers. The build/ folder holds source + tooling that also
+# gets served; keep it out of search results (esp. src-index.html, which has no
+# noindex of its own and would otherwise read as duplicate content of the LP).
+/build/*
+  X-Robots-Tag: noindex, nofollow
