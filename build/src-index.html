@@ -173,6 +173,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .tag{font-size:.72rem;font-weight:600;color:var(--navy);background:var(--sky-tint);border-radius:999px;padding:4px 11px}
   @media(max-width:900px){.prov-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:600px){.prov-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}}
+  /* 4 providers in a 3-col grid leaves one orphan in col 1 — center it.
+     Scoped to the 3-col breakpoint so the 2-col/1-col layouts are untouched. */
+  @media(min-width:901px){.prov-grid > .prov:last-child:nth-child(3n+1){grid-column:2}}
 
   /* stats band */
   .stats{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff}
@@ -290,17 +293,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="form-card" id="book">
       <div class="form-card-head">
         <h3>Request Your Appointment</h3>
-        <p>Pick a time that works for you and book your visit with a board-certified provider — no phone tag, no waiting.</p>
+        <p>Takes about 60 seconds. Our team will reach out within one business day to confirm your time.</p>
         <div class="form-reassure">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span>Confidential &amp; secure · No obligation</span>
         </div>
       </div>
 
-      <!-- GHL booking calendar (widget 6wkTyIqhxeW4x6DDBuWu). Self-scheduling replaces the intake form.
-           Conversion fires on booking completion (configure the calendar's post-booking redirect to
-           /thank-you in GHL). form_embed.js (loaded before </body>) auto-resizes the iframe. -->
-      <iframe src="https://api.leadconnectorhq.com/widget/booking/6wkTyIqhxeW4x6DDBuWu" allow="payment" style="width:100%;border:none;overflow:hidden;min-height:720px;display:block" scrolling="no" id="6wkTyIqhxeW4x6DDBuWu_1785797567168" title="Book your appointment"></iframe>
+      <!-- GHL intake form "Psychiatry Consult - Google Ads" (form ztenHCUFUumI9pzioAa5).
+           Set the FORM's on-submit redirect to /thank-you in GHL; the Google Ads conversion
+           fires on that thank-you page-view via GTM. form_embed.js (loaded before </body>)
+           auto-resizes the iframe. -->
+      <iframe
+        src="https://api.leadconnectorhq.com/widget/form/ztenHCUFUumI9pzioAa5"
+        style="width:100%;height:783px;border:none;display:block"
+        id="inline-ztenHCUFUumI9pzioAa5"
+        data-layout="{'id':'INLINE'}"
+        data-trigger-type="alwaysShow"
+        data-trigger-value=""
+        data-activation-type="alwaysActivated"
+        data-activation-value=""
+        data-deactivation-type="neverDeactivate"
+        data-deactivation-value=""
+        data-form-name="Psychiatry Consult  - Google Ads"
+        data-height="783"
+        data-layout-iframe-id="inline-ztenHCUFUumI9pzioAa5"
+        data-form-id="ztenHCUFUumI9pzioAa5"
+        title="Psychiatry Consult  - Google Ads"></iframe>
     </div>
   </div>
 </section>
@@ -499,16 +518,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </article>
 
       <article class="prov">
-        <div class="prov-photo"><img src="assets/providers/irikefe-ojevwe.jpg" alt="Irikefe Ojevwe, APRN, PMHNP-BC" loading="lazy" /></div>
-        <div class="prov-body">
-          <h3>Irikefe Ojevwe</h3>
-          <div class="prov-cred">APRN, PMHNP-BC</div>
-          <p>A board-certified provider offering a collaborative, patient-centered approach, Irikefe designs individualized treatment plans that empower lasting emotional wellness.</p>
-          <div class="prov-tags"><span class="tag">Anxiety</span><span class="tag">Depression</span><span class="tag">Bipolar</span><span class="tag">ADHD</span></div>
-        </div>
-      </article>
-
-      <article class="prov">
         <div class="prov-photo"><img src="assets/providers/abiose-adeboye.jpg" alt="Abiose Adeboye, RN, APRN" loading="lazy" /></div>
         <div class="prov-body">
           <h3>Abiose Adeboye</h3>
@@ -640,7 +649,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-  // Smooth-scroll the booking CTAs to the in-hero booking calendar.
+  // Smooth-scroll the booking CTAs to the in-hero booking form.
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href="#book"]');
     if (!a) return;
